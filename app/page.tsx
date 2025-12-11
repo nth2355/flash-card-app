@@ -1,15 +1,14 @@
-import Image from "next/image";
+
+import AuthPage from "./components/auth/AuthPage";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col justify-center items-center py-12 sm:px-6 lg:px-8 bg-white">
-      <Image
-        src="/images/logo.png"
-        width={200}
-        height={200}
-        alt="logo"
-      />
-      
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
+      {/* Auth Form */}
+      <div className="w-full max-w-md">
+        <AuthPage />
+      </div>
+
     </div>
   );
 }
