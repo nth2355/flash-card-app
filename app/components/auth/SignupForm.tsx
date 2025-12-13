@@ -20,8 +20,8 @@ const signupSchema = z.object({
   name: z.string().min(2, "Name too short"),
   email: z.string().email("Email invalid"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Confirm your password")
-}).refine((data) => data.password === data.confirmPassword, {
+  password_confirmation: z.string().min(6, "Confirm your password")
+}).refine((data) => data.password === data.password_confirmation, {
     message: "Passwords do not match",
     path: ["confirmPassword"]
 })
@@ -35,7 +35,7 @@ export function SignupForm({ onSwitch }: { onSwitch: () => void }) {
       name: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      password_confirmation: "",
     },
   })
 
@@ -97,7 +97,7 @@ export function SignupForm({ onSwitch }: { onSwitch: () => void }) {
           {/* Confirm Password */}
           <FormField
             control={form.control}
-            name="confirmPassword"
+            name="password_confirmation"
             render={({ field }) => (
                 <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
