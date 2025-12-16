@@ -110,7 +110,7 @@ export function SignupForm({ onSwitch }: { onSwitch: () => void }) {
           />
 
 
-          <Button className="w-full" size="lg">Register</Button>
+          <Button className="w-full  bg-gray-200 hover:bg-gray-400" size="lg">Register</Button>
         </form>
       </Form>
 
