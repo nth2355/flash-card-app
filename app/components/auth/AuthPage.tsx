@@ -8,7 +8,7 @@ export default function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup">("login")
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6">
+    <div className="flex flex-col items-center justify-center gap-6 bg-slate-50">
       
       {/* Logo */}
       <Image
