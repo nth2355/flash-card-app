@@ -1,16 +1,18 @@
 "use client"
-import { useState } from "react"
+import Image from "next/image"
 import { LoginForm } from "./LoginForm"
 import { SignupForm } from "./SignupForm"
-import Image from "next/image";
 
-export default function AuthPage() {
-  const [mode, setMode] = useState<"login" | "signup">("login")
-
+export default function AuthPage({
+  mode,
+  onSwitch,
+}: {
+  mode: "login" | "signup"
+  onSwitch: () => void
+}) {
   return (
-    <div className="flex flex-col items-center justify-center gap-6 bg-slate-50">
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-slate-50">
       
-      {/* Logo */}
       <Image
         src="/images/logo.png"
         width={300}
@@ -19,12 +21,11 @@ export default function AuthPage() {
         className="object-contain"
       />
 
-      {/* Form Container */}
       <div className="w-full max-w-md">
         {mode === "login" ? (
-          <LoginForm onSwitch={() => setMode("signup")} />
+          <LoginForm onSwitch={onSwitch} />
         ) : (
-          <SignupForm onSwitch={() => setMode("login")} />
+          <SignupForm onSwitch={onSwitch} />
         )}
       </div>
     </div>
