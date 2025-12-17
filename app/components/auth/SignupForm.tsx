@@ -17,8 +17,8 @@ import { Button } from "@/app/components/ui/button"
 import { PasswordInput } from "./PasswordInput"
 
 const signupSchema = z.object({
-  name: z.string().min(2, "Name too short"),
-  email: z.string().email("Email invalid"),
+  name: z.string().min(2, "Name is required"),
+  email: z.string().email("Invalid Email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   password_confirmation: z.string().min(6, "Confirm your password")
 }).refine((data) => data.password === data.password_confirmation, {
