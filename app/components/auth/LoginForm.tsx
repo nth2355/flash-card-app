@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useAuth } from "@/app/context/AuthContext"
 
 import {
   Form,
@@ -17,7 +18,8 @@ import {
 import { Input } from "@/app/components/ui/input"
 import { Button } from "@/app/components/ui/button"
 import { PasswordInput } from "./PasswordInput"
-import { login, getMe } from "@/lib/api"
+import { getMe } from "@/lib/api"
+import { login as loginApi } from "@/lib/api"
 
 type DialogMessage = {
   title: string
@@ -35,6 +37,7 @@ type LoginSchema = z.infer<typeof loginSchema>
 
 // Component
 export function LoginForm({ onSwitch }: { onSwitch: () => void }) {
+  const { login } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -46,24 +49,25 @@ export function LoginForm({ onSwitch }: { onSwitch: () => void }) {
     },
   })
 
-  async function onSubmit(values: LoginSchema) {
-    try {
-      //  Login
-      const res = await login(values.email, values.password)
+async function onSubmit(values: LoginSchema) {
+  try {
+    setLoading(true)
 
-      //  Lưu token
-      localStorage.setItem("token", res.access_token)
+    // 1️⃣ Gọi API login
+    const res = await loginApi(values.email, values.password)
 
-      //  Gọi /me
-      const me = await getMe(res.access_token)
+    // 2️⃣ Đưa token cho AuthContext
+    await login(res.access_token)
 
-      console.log("Logged in user:", me)
-
-      toast.success("Login successfully. Welcome!")
-    } catch (err: any) {
-      toast.error(err.message || "Login Failed")
-    }
+    // 3️⃣ Thông báo
+    toast.success("Login successfully 🎉")
+  } catch (err: any) {
+    toast.error(err.message || "Login failed")
+  } finally {
+    setLoading(false)
   }
+}
+
 
   return (
     <div className="space-y-4 w-full max-w-sm mx-auto">
