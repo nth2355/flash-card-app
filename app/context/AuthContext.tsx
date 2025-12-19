@@ -11,25 +11,29 @@ type User = {
 }
 
 type AuthContextType = {
-    user: User | null
-    token: string | null
-    isAuthenticated: boolean
-    loading: boolean
-    login: (token: string) => Promise<void>
-    logout: () => void
+  user: User | null
+  setUser: (user: User | null) => void
+  token: string | null
+  isAuthenticated: boolean
+  loading: boolean
+  login: (token: string) => Promise<void>
+  logout: () => void
 }
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({children} : {children : ReactNode}){
-    const [user, setUser] = useState<User|null>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [token, setToken] = useState<string | null>(null)
     const [loading, setLoading] = useState(true)
+
 
     const router = useRouter()
 
     //App load: doc token cu
     useEffect(() => {
         const storedToken = localStorage.getItem("token")
+        
 
         if(!storedToken){
             setLoading(false)
@@ -66,11 +70,12 @@ export function AuthProvider({children} : {children : ReactNode}){
         <AuthContext.Provider
             value={{
                 user,
+                setUser,
                 token,
                 loading,
                 isAuthenticated: !!user,
                 login,
-                logout
+                logout,
             }}
         >
             {children}
