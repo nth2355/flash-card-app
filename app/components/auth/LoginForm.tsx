@@ -18,8 +18,9 @@ import {
 import { Input } from "@/app/components/ui/input"
 import { Button } from "@/app/components/ui/button"
 import { PasswordInput } from "./PasswordInput"
-import { getMe } from "@/lib/api"
+// import { getMe } from "@/lib/api"
 import { login as loginApi } from "@/lib/api"
+import {useRouter} from "next/navigation"
 
 type DialogMessage = {
   title: string
@@ -40,6 +41,7 @@ export function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const { login } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const router = useRouter()
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -53,14 +55,15 @@ async function onSubmit(values: LoginSchema) {
   try {
     setLoading(true)
 
-    // 1️⃣ Gọi API login
+    //  Gọi API login
     const res = await loginApi(values.email, values.password)
 
-    // 2️⃣ Đưa token cho AuthContext
+    //  Đưa token cho AuthContext
     await login(res.access_token)
 
-    // 3️⃣ Thông báo
+    // Thông báo
     toast.success("Login successfully 🎉")
+    router.replace("/dashboard")
   } catch (err: any) {
     toast.error(err.message || "Login failed")
   } finally {
